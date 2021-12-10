@@ -31,12 +31,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
      $<$<CONFIG:MinSizeRel>:DEBUG_ONLY=0>
 )
 
-# Add include directory here:
-include_directories(
-    PUBLIC src
-)
-
-# Add target include directory here: (I have no clue what the differance is tbh)
+# Add target include directory here:
 target_include_directories(${PROJECT_NAME}
     PUBLIC src
 )
