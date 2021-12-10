@@ -1,5 +1,5 @@
 # Set CMake version number
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.13)
 
 # Change "Temp-Projekt" to your project name
 project(Temp-Projekt VERSION 0.1.0)
