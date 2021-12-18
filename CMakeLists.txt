@@ -16,8 +16,7 @@ add_library(project_options INTERFACE)
 if(MSVC)
      target_compile_options(project_warnings INTERFACE /W4 /WX "/permissive-")
 else()
-                    # <-- Set standard here -->
-     target_compile_features(project_options INTERFACE cxx_std_17)
+     # target_compile_features(project_options INTERFACE cxx_std_17) # Set standard later for now
      target_include_directories(project_options INTERFACE include external)
 
      target_compile_options(project_warnings
@@ -69,9 +68,11 @@ add_subdirectory(
 include(CTest)
 enable_testing()
 
-# Extra C++ specific options I need
+# Extra C++ specific option I need
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-# set(CMAKE_CXX_STANDARD 17) # Set standard above for now
+
+# <-- Set standard here -->
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 # Comment out if you don't need CPack
