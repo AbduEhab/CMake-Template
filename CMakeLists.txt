@@ -83,7 +83,7 @@ include(CPack)
 # <--------------------------------------->
 
 # <- Define Compile Time Definitions here: ->
-target_compile_definitions(${PROJECT_NAME} PUBLIC
+target_compile_definitions(${PROJECT_NAME} PRIVATE
      $<$<CONFIG:Debug>:DEBUG=1>
      $<$<CONFIG:RelWithDebInfo>:DEBUG=1>
      $<$<CONFIG:Release>:NDEBUG=1>
