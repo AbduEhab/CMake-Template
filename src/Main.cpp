@@ -1,6 +1,6 @@
-#include <iostream>
+#include <TempHeader.h>
 
 int main(int, char **)
 {
-    std::cout << "Hello, world!\n" << std::endl;
+    print("Hello, world!\n");
 }
