@@ -46,7 +46,7 @@ else()
 add_custom_command(
      TARGET ${PROJECT_NAME} POST_BUILD
      COMMAND ${CMAKE_COMMAND} -E copy
-          ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.exe
+          ${CMAKE_CURRENT_BINARY_DIR}/Debug/${PROJECT_NAME}.exe
           ${CMAKE_SOURCE_DIR}/bin/
 )
 endif()
