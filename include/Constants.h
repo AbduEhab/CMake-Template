@@ -38,19 +38,17 @@ const std::string BINARY_DIRECTORY_TEST(std::string(get_current_dir_name()) + "/
 
 #endif
 
-#define _unlikely [[UNLIKELY]]
+#define _unlikely [[unlikely]]
 
-#define _likely [[LIKELY]]
+#define _likely [[likely]]
 
-#define _maybe_unused [[MAYBE_UNUSED]]
+#define _maybe_unused [[maybe_unused]]
 
-#define _noexcept [[NOEXCEPT]]
-
-#define _deprecated [[DEPRECATED]]
+#define _deprecated [[deprecated]]
 
 #define _nodiscard [[nodiscard]]
 
-#define _optimize_for_synchronized [[OPTIMIZE_FOR_SYNCHRONIZED]]
+#define _optimize_for_synchronized [[optimize_for_synchronized]]
 
 #define kEpsilon 0.000001
 
