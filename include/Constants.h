@@ -1,15 +1,18 @@
 #pragma once
 
+#include <algorithm>
 #include <array>
-#include <cassert>
+#include <assert.h>
 #include <chrono>
-#include <cmath>
 #include <deque>
 #include <fstream>
 #include <iostream>
 #include <map>
+#include <math.h>
 #include <memory>
 #include <mutex>
+#include <numbers>
+#include <sstream>
 #include <stack>
 #include <string>
 #include <thread>
@@ -39,8 +42,6 @@ const std::string BINARY_DIRECTORY_TEST(std::string(get_current_dir_name()) + "/
 
 #define _likely [[LIKELY]]
 
-#define _unused [[UNUSED]]
-
 #define _maybe_unused [[MAYBE_UNUSED]]
 
 #define _noexcept [[NOEXCEPT]]
@@ -50,6 +51,8 @@ const std::string BINARY_DIRECTORY_TEST(std::string(get_current_dir_name()) + "/
 #define _nodiscard [[nodiscard]]
 
 #define _optimize_for_synchronized [[OPTIMIZE_FOR_SYNCHRONIZED]]
+
+#define kEpsilon 0.000001
 
 void debug_print()
 {

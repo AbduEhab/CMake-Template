@@ -1,45 +1,54 @@
 # Set CMake version number
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.16)
 
 # Change "Temp-Projekt" to your project name
-project(Temp-Projekt VERSION 0.2.0)
+project(Temp-Projekt VERSION 0.2.0 LANGUAGES CXX)
 
 #----------------------------------------------------------------------------------------------
-# Part till line 39 is taken from @lefticus
+# Part till line 46 is taken from @lefticus
 
-# Link this 'library' to use the standard warnings
-add_library(project_warnings INTERFACE)
+# set a default CXX standard used by the external tools like clang-tidy, cppcheck, etc.
+# You can later set fine-grained standards for each target using `target_compile_features`
+set(CMAKE_CXX_STANDARD 17)
 
-# Link this 'library' to set the c++ standard / compile-time options requested
-add_library(project_options INTERFACE)
+### Add project_options
+# include(FetchContent)
+# FetchContent_Declare(_project_options URL https://github.com/cpp-best-practices/project_options/archive/refs/heads/main.zip)
+# FetchContent_MakeAvailable(_project_options)
+# include(${_project_options_SOURCE_DIR}/Index.cmake)
+include(CMakeSetupFiles/Index.cmake)
 
-if(MSVC)
-     target_compile_options(project_warnings INTERFACE /W4 /WX "/permissive-")
-else()
-     # target_compile_features(project_options INTERFACE cxx_std_17) # Set standard later for now
-     target_include_directories(project_options INTERFACE include external)
+# run_vcpkg()
 
-     target_compile_options(project_warnings
-          INTERFACE -Wall
-                    -Werror # treat all warnings as errors
-                    -Wextra # reasonable and standard
-                    -Wshadow # warn the user if a variable declaration shadows one from a parent context
-                    -Wnon-virtual-dtor # warn the user if a class with virtual functions has a non-virtual destructor. This helps catch hard to track down memory errors
-                    -Wold-style-cast # warn for c-style casts
-                    -Wcast-align # warn for potential performance problem casts
-                    -Wunused # warn on anything being unused
-                    -Woverloaded-virtual # warn if you overload (not override) a virtual function
-                    -Wpedantic # warn if non-standard C++ is used
-                    -Wconversion # warn on type conversions that may lose data
-                    -Wsign-conversion # warn on sign conversions
-                    -Wnull-dereference # warn if a null dereference is detected
-                    -Wdouble-promotion # warn if float is implicit promoted to double
-                    -Wformat=2 # warn on security issues around functions that format output (ie printf)
-     )
-endif()
+# Initialize project_options
+# uncomment the options to enable them
+project_options(
+#   ENABLE_CACHE
+#   ENABLE_CONAN
+  WARNINGS_AS_ERRORS
+#   ENABLE_CPPCHECK
+#   ENABLE_CLANG_TIDY
+#   ENABLE_INCLUDE_WHAT_YOU_USE
+#   ENABLE_COVERAGE
+#   ENABLE_PCH
+#   PCH_HEADERS <Eigen/Dense> <fmt/core.h> <vector> <utility> <string> <string_view>
+#   ENABLE_DOXYGEN
+#   ENABLE_IPO
+#   ENABLE_USER_LINKER
+#   ENABLE_BUILD_WITH_TIME_TRACE
+#   ENABLE_UNITY
+#   ENABLE_SANITIZER_ADDRESS
+#   ENABLE_SANITIZER_LEAK
+#   ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+#   ENABLE_SANITIZER_THREAD
+#   ENABLE_SANITIZER_MEMORY
+  CLANG_WARNINGS "-Weverything"
+)
 
 #----------------------------------------------------------------------------------------------
-# Part till line 58 is taken from @codetechandtutorials
+
+#----------------------------------------------------------------------------------------------
+# Part till line 67 is taken from @codetechandtutorials
 
 #           DOWNLOAD ALL THE SUBMODULES
 find_package(Git QUIET)
@@ -72,38 +81,41 @@ enable_testing()
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # <-- Set standard here -->
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED on)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 # <----------------------->
 
-# < -Comment out if you don't need CPack ->
+# <-- Define warnings to show -->
+target_link_libraries(${PROJECT_NAME} PRIVATE project_options project_warnings)
+# <----------------------->
+
+# <-- Comment out if you don't need CPack -->
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
-# <--------------------------------------->
+# <----------------------------------------->
 
-# <- Define Compile Time Definitions here: ->
+# <-- Define Compile Time Definitions here: -->
 target_compile_definitions(${PROJECT_NAME} PRIVATE
      $<$<CONFIG:Debug>:DEBUG=1>
      $<$<CONFIG:RelWithDebInfo>:DEBUG=1>
      $<$<CONFIG:Release>:NDEBUG=1>
      $<$<CONFIG:MinSizeRel>:NDEBUG=1>
 )
-# <----------------------------------------->
+# <------------------------------------------->
 
-# <- Add directories to include directory here: ->
+# <-- Add directories to include directory here: -->
 target_include_directories(${PROJECT_NAME}
     PUBLIC src
     PUBLIC include
 )
-# <---------------------------------------------->
+# <------------------------------------------------>
 
-# <- Add directory of external libs to link here: ->
+# <-- Add directory of external libs to link here: -->
 target_link_directories(${PROJECT_NAME}
      PRIVATE src # this line is just to prevent errors
 )
-# <------------------------------------------------>
+# <-------------------------------------------------->
 
-# <- Link needed Libs: ->
+# <-- Link needed Libs: -->
 # target_link_libraries(${PROJECT_NAME} "LIB NAME")
-# <--------------------->
+# <----------------------->
