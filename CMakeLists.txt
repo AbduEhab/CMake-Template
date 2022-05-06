@@ -48,7 +48,7 @@ project_options(
 #----------------------------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------------------------
-# Part till line 72 is taken from @codetechandtutorials
+# Part till line 72 similar to that of @codetechandtutorials
 
 #           DOWNLOAD ALL THE SUBMODULES
 find_package(Git QUIET)
