@@ -5,7 +5,7 @@ add_executable(${PROJECT_NAME}
     Main.cpp
 )
 
-if(NOT MSVC)
+if(NOT MSVC) # < - VSCODE UNIX ONLY - >
 
 # <- Copy Binary to DEV specified location ->
 add_custom_command(
@@ -14,16 +14,6 @@ add_custom_command(
           ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}
           ${CMAKE_SOURCE_DIR}/bin/
 )
-# <----------------------------------------->
-
-# # <- Copy engine related files to binary location ->
-# add_custom_command(
-#      TARGET ${PROJECT_NAME} POST_BUILD
-#      COMMAND ${CMAKE_COMMAND} -E copy
-#           ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}/assets
-#           ${CMAKE_SOURCE_DIR}/bin/
-# )
-# # <------------------------------------------------>
 
 # <- Set a symbolic link so the binary can find a required relative folder ->
 # set(link_src "${CMAKE_SOURCE_DIR}/assets")
@@ -41,7 +31,7 @@ add_custom_command(
 # )
 # <------------------------------------------------------------------------->
 
-else()
+else() # < - VSCODE WINDOWS ONLY - >
 
 add_custom_command(
      TARGET ${PROJECT_NAME} POST_BUILD

@@ -7,5 +7,6 @@ void print(const char *message)
 
 int main(int, char **)
 {
+    TimedBlock block("main");
     print("Hello, world!\n");
 }

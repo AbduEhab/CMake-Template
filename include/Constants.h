@@ -21,6 +21,18 @@
 #include <utility>
 #include <vector>
 
+#define PROFILING 0
+#define TIMER_ENABLED 0
+
+#include "Profiling/Instrumentor.h"
+#include "Profiling/Timer.h"
+
+// DEBUG MACROS
+#ifdef DEBUG
+
+#endif
+
+
 #ifdef _WIN32
 
 #include <direct.h>
@@ -58,7 +70,7 @@ void debug_print()
 }
 
 template <typename First, typename... Strings>
-void debug_print(First arg, const Strings &...rest)
+_maybe_unused void debug_print(_maybe_unused First arg, _maybe_unused const Strings &...rest)
 {
 
 #ifdef DEBUG

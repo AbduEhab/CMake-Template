@@ -117,5 +117,7 @@ target_link_directories(${PROJECT_NAME}
 # <-------------------------------------------------->
 
 # <-- Link needed Libs: -->
-# target_link_libraries(${PROJECT_NAME} "LIB NAME")
+target_link_libraries(${PROJECT_NAME} 
+    PRIVATE project_options project_warnings
+)
 # <----------------------->
