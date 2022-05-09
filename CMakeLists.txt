@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 
 # Change "Temp-Projekt" to your project name
 project(Temp-Projekt VERSION 0.2.0 LANGUAGES CXX)
+enable_language(CXX)
 
 #----------------------------------------------------------------------------------------------
 # Part till line 46 is taken from @lefticus
@@ -68,6 +69,12 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
 endif()
 
 #----------------------------------------------------------------------------------------------
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
+      "Build not specified, defaulted to Debug" FORCE)
+    message(STATUS "Build type not specified, defaulted to Debug")
+endif(NOT CMAKE_BUILD_TYPE)
 
 # Add locations of other CMakelists.txt (one per call)
 add_subdirectory(
