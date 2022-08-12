@@ -43,13 +43,13 @@ project_options(
 #   ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
 #   ENABLE_SANITIZER_THREAD
 #   ENABLE_SANITIZER_MEMORY
-  CLANG_WARNINGS "-Weverything"
+#   CLANG_WARNINGS "-Weverything" # doesn't work with MinGW
 )
 
 #----------------------------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------------------------
-# Part till line 68 is very very similar to that of @codetechandtutorials
+# Part till line 69 is very very similar to that of @codetechandtutorials
 
 #           DOWNLOAD ALL THE SUBMODULES
 find_package(Git QUIET)
