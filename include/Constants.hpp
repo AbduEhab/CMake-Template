@@ -1,7 +1,5 @@
 #pragma once
 
-#include "json.hpp"
-#include "stb_image_write.h"
 #include <algorithm>
 #include <array>
 #include <assert.h>

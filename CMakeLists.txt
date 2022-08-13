@@ -43,7 +43,7 @@ project_options(
 #   ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
 #   ENABLE_SANITIZER_THREAD
 #   ENABLE_SANITIZER_MEMORY
-#   CLANG_WARNINGS "-Weverything" # doesn't work with MinGW
+  CLANG_WARNINGS "-Weverything" # doesn't work with MinGW
 )
 
 #----------------------------------------------------------------------------------------------
