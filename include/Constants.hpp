@@ -36,7 +36,7 @@
 
 #endif
 
-const int kCORE_COUNT = std::thread::hardware_concurrency();
+inline const int kCORE_COUNT = std::thread::hardware_concurrency();
 
 #ifdef _WIN32
 
@@ -44,16 +44,16 @@ const int kCORE_COUNT = std::thread::hardware_concurrency();
 #include <direct.h>
 #include <windows.h>
 
-const std::string BINARY_DIRECTORY(std::string(_getcwd(NULL, 0)) + '/');
-const std::string TEST_DIRECTORY = std::filesystem::current_path().string();
+inline const std::string BINARY_DIRECTORY(std::string(_getcwd(NULL, 0)) + '/');
+inline const std::string TEST_DIRECTORY = std::filesystem::current_path().string();
 
 #else
 
 #include <filesystem>
 #include <unistd.h>
 
-const std::string BINARY_DIRECTORY(std::string((char *)std::filesystem::current_path().c_str()) + "/");
-const std::string BINARY_DIRECTORY_TEST(std::string(get_current_dir_name()) + "/");
+inline const std::string BINARY_DIRECTORY(std::string((char *)std::filesystem::current_path().c_str()) + "/");
+inline const std::string BINARY_DIRECTORY_TEST(std::string(get_current_dir_name()) + "/");
 
 #endif
 
