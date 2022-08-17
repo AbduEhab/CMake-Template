@@ -34,11 +34,14 @@
 
 #endif
 
-inline const int kCORE_COUNT = std::thread::hardware_concurrency();
+inline const int kCORE_COUNT = static_cast<int>(std::thread::hardware_concurrency());
 
 #ifdef _WIN32
 
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
+
 #include <direct.h>
 #include <windows.h>
 
@@ -63,7 +66,7 @@ void debug_print()
 }
 
 template <typename First, typename... Strings>
-[[nodiscard]] void debug_print([[maybe_unused]] First arg, [[maybe_unused]] const Strings &...rest)
+void debug_print([[maybe_unused]] First arg, [[maybe_unused]] const Strings &...rest)
 {
 
 #ifdef DEBUG

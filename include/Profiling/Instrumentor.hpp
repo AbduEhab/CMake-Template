@@ -142,7 +142,7 @@ public:
 
         m_result.start = std::chrono::time_point_cast<std::chrono::microseconds>(m_startTimepoint).time_since_epoch().count();
         m_result.end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
-        m_result.threadID = (uint32_t)std::hash<std::thread::id>{}(std::this_thread::get_id());
+        m_result.threadID = static_cast<unsigned int>(std::hash<std::thread::id>{}(std::this_thread::get_id()));
         Instrumentor::Get().writeProfile(m_result);
 
         m_stopped = true;

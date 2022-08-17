@@ -43,7 +43,7 @@ project_options(
 #   ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
 #   ENABLE_SANITIZER_THREAD
 #   ENABLE_SANITIZER_MEMORY
-  CLANG_WARNINGS "-Weverything" # doesn't work with MinGW
+    CLANG_WARNINGS "-Weverything" # doesn't work with MinGW
 )
 
 #----------------------------------------------------------------------------------------------
@@ -87,6 +87,8 @@ enable_testing()
 
 # Extra C++ specific option I need
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ -lwsock32 -lws2_32 ${CMAKE_CXX_STANDARD_LIBRARIES}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
 
 # <-- Set standard here -->
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
