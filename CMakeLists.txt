@@ -1,8 +1,8 @@
 # Set CMake version number
 cmake_minimum_required(VERSION 3.13)
 
-# Change "Temp-Projekt" to your project name
-project(Temp-Projekt VERSION 0.7.0 LANGUAGES CXX)
+# Change "Cmake-Template" to your project name
+project(Cmake-Template VERSION 0.7.1 LANGUAGES CXX)
 enable_language(CXX)
 
 # ----------------------------------------------------------------------------------------------
