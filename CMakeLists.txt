@@ -1,12 +1,12 @@
 # Set CMake version number
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.13)
 
 # Change "Temp-Projekt" to your project name
-project(Temp-Projekt VERSION 0.2.0 LANGUAGES CXX)
+project(Temp-Projekt VERSION 0.7.0 LANGUAGES CXX)
 enable_language(CXX)
 
 # ----------------------------------------------------------------------------------------------
-# Part till line 48 is taken from @lefticus
+# Part till line 73 is derived from @lefticus
 
 # set a default CXX standard used by the external tools like clang-tidy, cppcheck, etc.
 # You can later set fine-grained standards for each target using `target_compile_features`
@@ -23,35 +23,59 @@ include(CMakeSetupFiles/Index.cmake)
 
 # Initialize project_options
 # uncomment the options to enable them
-project_options(
+if(MSVC)
+    project_options(
 
-    # ENABLE_CACHE
-    # ENABLE_CONAN
-    WARNINGS_AS_ERRORS
+        # ENABLE_CACHE
+        # ENABLE_CONAN
+        # WARNINGS_AS_ERRORS
+        # ENABLE_CPPCHECK
+        # ENABLE_CLANG_TIDY
+        # ENABLE_INCLUDE_WHAT_YOU_USE
+        # ENABLE_COVERAGE
+        # ENABLE_PCH
+        # PCH_HEADERS <Eigen/Dense> <fmt/core.h> <vector> <utility> <string> <string_view>
+        # ENABLE_DOXYGEN
+        # ENABLE_IPO
+        # ENABLE_USER_LINKER
+        # ENABLE_BUILD_WITH_TIME_TRACE
+        # ENABLE_UNITY
+        # ENABLE_SANITIZER_ADDRESS
+        # ENABLE_SANITIZER_LEAK
+        # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+        # ENABLE_SANITIZER_THREAD
+        # ENABLE_SANITIZER_MEMORY
+        CLANG_WARNINGS "-Weverything"
+    )
+else()
+    project_options(
 
-    # ENABLE_CPPCHECK
-    # ENABLE_CLANG_TIDY
-    # ENABLE_INCLUDE_WHAT_YOU_USE
-    # ENABLE_COVERAGE
-    # ENABLE_PCH
-    # PCH_HEADERS <Eigen/Dense> <fmt/core.h> <vector> <utility> <string> <string_view>
-    # ENABLE_DOXYGEN
-    # ENABLE_IPO
-    # ENABLE_USER_LINKER
-    # ENABLE_BUILD_WITH_TIME_TRACE
-    # ENABLE_UNITY
-    # ENABLE_SANITIZER_ADDRESS
-    # ENABLE_SANITIZER_LEAK
-    # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
-    # ENABLE_SANITIZER_THREAD
-    # ENABLE_SANITIZER_MEMORY
-    CLANG_WARNINGS "-Weverything" # doesn't work with MinGW
-)
+        # ENABLE_CACHE
+        # ENABLE_CONAN
+        # WARNINGS_AS_ERRORS
+        # ENABLE_CPPCHECK
+        # ENABLE_CLANG_TIDY
+        # ENABLE_INCLUDE_WHAT_YOU_USE
+        # ENABLE_COVERAGE
+        # ENABLE_PCH
+        # PCH_HEADERS <Eigen/Dense> <fmt/core.h> <vector> <utility> <string> <string_view>
+        # ENABLE_DOXYGEN
+        # ENABLE_IPO
+        # ENABLE_USER_LINKER
+        # ENABLE_BUILD_WITH_TIME_TRACE
+        # ENABLE_UNITY
+        # ENABLE_SANITIZER_ADDRESS
+        # ENABLE_SANITIZER_LEAK
+        # ENABLE_SANITIZER_UNDEFINED_BEHAVIOR
+        # ENABLE_SANITIZER_THREAD
+        # ENABLE_SANITIZER_MEMORY
+    )
+endif()
 
 # ----------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------
-# Part till line 73 is very very similar to that of @codetechandtutorials
+# Part till line 97 is very very similar to that of @codetechandtutorials
 
 # DOWNLOAD ALL THE SUBMODULES
 find_package(Git QUIET)
@@ -90,8 +114,7 @@ enable_testing()
 
 # Extra C++ specific option I need
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ -lwsock32 -lws2_32 ${CMAKE_CXX_STANDARD_LIBRARIES}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
+
 
 # <-- Set standard here -->
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)

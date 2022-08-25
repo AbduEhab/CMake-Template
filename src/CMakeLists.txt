@@ -1,12 +1,16 @@
 cmake_minimum_required(VERSION 3.0.0)
 
-file(GLOB SRC_CXX_FILES *.cpp)
-file(GLOB SRC_C_FILES *.c)
+file(GLOB SRC_CXX_FILES CONFIGURE_DEPENDS *.cpp)
+file(GLOB SRC_C_FILES CONFIGURE_DEPENDS *.c)
+file(GLOB INC_CXX_FILES CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include*.cpp)
+file(GLOB INC_C_FILES CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include*.c)
 
 # Add source files to be compiled here
 add_executable(${PROJECT_NAME}
     ${SRC_CXX_FILES}
     ${SRC_C_FILES}
+    ${INC_CXX_FILES}
+    ${INC_C_FILES}
 )
 
 message(STATUS `CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}`)
