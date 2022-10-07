@@ -97,11 +97,11 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
 endif()
 
 # ----------------------------------------------------------------------------------------------
-if(CMAKE_BUILD_TYPE STREQUAL "")
-    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING
-        "Build not specified, defaulted to Debug" FORCE)
-    message(STATUS "Build type not specified, defaulted to Debug")
-endif()
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING
+        "Build not specified, defaulted to RelWithDebInfo" FORCE)
+    message(STATUS "Build type not specified, defaulted to RelWithDebInfo")
+endif(NOT CMAKE_BUILD_TYPE)
 
 # Add locations of other CMakelists.txt (one per call)
 add_subdirectory(
@@ -114,7 +114,6 @@ enable_testing()
 
 # Extra C++ specific option I need
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-
 
 # <-- Set standard here -->
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
