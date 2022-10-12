@@ -128,13 +128,15 @@ template <typename First, typename... Strings>
 void async_print_by_force(const First arg, const Strings &...rest)
 {
     std::thread t([&]()
-                  { print_by_force(arg, rest...); });
+                  { print_by_force(arg, rest...); std::cout << std::endl; });
     t.detach();
 }
 
 #ifdef DEBUG
 
-#define debug_print(x, y) print_by_force(x, y)
+#define debug_print(x, y) \
+    print_by_force(x, y); \
+    std::cout << std::endl;
 #define debug_async_print(x, y) async_print_by_force(x, y)
 #else
 #define debug_print(x, y)
