@@ -65,6 +65,40 @@ inline const std::string BINARY_DIRECTORY = std::filesystem::current_path().stri
 #define kEpsilon 0.000001
 
 /**
+ * @brief A random number generator
+ *
+ * @tparam T The type of the random number
+ *
+ * @param min The minimum value of the random number
+ * @param max The maximum value of the random number
+ */
+template <typename T>
+inline T random(T min = 0.0, T max = 1.0)
+{
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(min, max);
+    return (T)dis(gen);
+}
+
+/**
+ * @brief Map a value from one range to another
+ *
+ * @tparam T The type of the value
+ * @param value The value to map
+ * @param min The minimum value of the range
+ * @param max The maximum value of the range
+ * @param new_min The minimum value of the new range
+ * @param new_max The maximum value of the new range
+ * @return constexpr T
+ */
+template <typename T>
+inline constexpr T map_to_range(T value, T min, T max, T new_min, T new_max)
+{
+    return (T)(((value - min) / (max - min)) * (new_max - new_min) + new_min);
+}
+
+/**
  * @brief Prints the variables given to the console
  *
  * @tparam First stringstream-able type
