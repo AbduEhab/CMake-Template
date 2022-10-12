@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #if PROFILING
 
 #if defined(__GNUC__) || (defined(__MWERKS__) && (__MWERKS__ >= 0x3000)) || (defined(__ICC) && (__ICC >= 600)) || defined(__ghs__)
@@ -21,12 +23,16 @@
 #endif
 
 #define PROFILE_SCOPE(name) InstrumentationTimer timer##__LINE__(name)
-#define PROFILE_FUNCTION() PROFILE_SCOPE(__FUNCTION__)
+#define PROFILE_FUNCTION() PROFILE_SCOPE(__FUNCSIG)
 #else
 #define PROFILE_SCOPE(name)
 #define PROFILE_FUNCTION()
 #endif
 
+/**
+ * @brief The result of a profiling session
+ *
+ */
 struct ProfileResult
 {
     const std::string name;
@@ -34,6 +40,9 @@ struct ProfileResult
     uint32_t threadID;
 };
 
+/**
+ * @brief A simple timer class that can be used to measure the time it takes to execute a function or a block of code.
+ */
 class Instrumentor
 {
     std::string m_sessionName;
@@ -45,6 +54,11 @@ class Instrumentor
     Instrumentor() {}
 
 public:
+    /**
+     * @brief Get the singleton instance of the Instrumentor
+     *
+     * @return Instrumentor&
+     */
     static Instrumentor &Get()
     {
         static Instrumentor instance;
@@ -56,18 +70,29 @@ public:
         endSession();
     }
 
-    void beginSession(const std::string &name, const std::string &filepath = "results.json")
+    /**
+     * @brief Begin a profiling session
+     *
+     * @param name The name of the session
+     * @param filepath The filepath to write the results to
+     */
+    void beginSession(const std::string &name, const std::string &filepath = std::filesystem::current_path().string() + "/profiling")
     {
         if (m_activeSession)
         {
             endSession();
         }
         m_activeSession = true;
-        m_outputStream.open(filepath);
+        std::filesystem::create_directories(filepath);
+        m_outputStream.open(filepath + "/perfetto_trace.json");
         writeHeader();
         m_sessionName = name;
     }
 
+    /**
+     * @brief End the current profiling session
+     *
+     */
     void endSession()
     {
         if (!m_activeSession)
@@ -80,6 +105,11 @@ public:
         m_profileCount = 0;
     }
 
+    /**
+     * @brief Write a profiling result to the output stream
+     *
+     * @param result
+     */
     void writeProfile(const ProfileResult &result)
     {
         std::lock_guard<std::mutex> lock(m_lock);
@@ -103,11 +133,19 @@ public:
         m_outputStream << "}";
     }
 
+    /**
+     * @brief Write the header of the profiling session to the output stream
+     *
+     */
     void writeHeader()
     {
         m_outputStream << "{\"otherData\": {},\"traceEvents\":[";
     }
 
+    /**
+     * @brief Write the footer of the profiling session to the output stream
+     *
+     */
     void writeFooter()
     {
         m_outputStream << "]}";
@@ -118,10 +156,19 @@ class InstrumentationTimer
 {
     ProfileResult m_result;
 
+    /**
+     * @brief Variable to store the start time of the timer
+     *
+     */
     std::chrono::time_point<std::chrono::high_resolution_clock> m_startTimepoint;
     bool m_stopped;
 
 public:
+    /**
+     * @brief Construct a new Instrumentation Timer object
+     *
+     * @param name The name of the timer
+     */
     InstrumentationTimer(const std::string &name)
         : m_result({name, 0, 0, 0}), m_stopped(false)
     {
@@ -136,6 +183,10 @@ public:
         }
     }
 
+    /**
+     * @brief Stop the timer and write the result to the output stream
+     *
+     */
     void stop()
     {
         auto endTimepoint = std::chrono::high_resolution_clock::now();

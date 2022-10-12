@@ -1,12 +1,13 @@
 #include <Constants.hpp>
 
-void print(const char *message)
+int main([[maybe_unused]] int, [[maybe_unused]] char **)
 {
-    std::cout << message << std::endl;
-}
+    Instrumentor::Get().beginSession("Main func");
 
-int main(int, char **)
-{
-    TimedBlock block("main");
-    print("Hello, world!\n");
+    TimedBlock block("Main function");
+
+    print_by_force("Hello World!\nThe largest number I can hold is: ", std::numeric_limits<int>::max());
+    print_by_force("\nPress enter to continue...");
+
+    std::cin.get();
 }

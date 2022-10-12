@@ -2,11 +2,11 @@
 cmake_minimum_required(VERSION 3.13)
 
 # Change "Cmake-Template" to your project name
-project(Cmake-Template VERSION 0.7.1 LANGUAGES CXX)
+project(Cmake-Template VERSION 0.8.0 LANGUAGES CXX)
 enable_language(CXX)
 
 # ----------------------------------------------------------------------------------------------
-# Part till line 73 is derived from @lefticus
+# Part till line 75 is derived from @lefticus
 
 # set a default CXX standard used by the external tools like clang-tidy, cppcheck, etc.
 # You can later set fine-grained standards for each target using `target_compile_features`
@@ -75,7 +75,7 @@ endif()
 # ----------------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------------
-# Part till line 97 is very very similar to that of @codetechandtutorials
+# Part till line 99 is very very similar to that of @codetechandtutorials
 
 # DOWNLOAD ALL THE SUBMODULES
 find_package(Git QUIET)
@@ -97,6 +97,7 @@ if(GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
 endif()
 
 # ----------------------------------------------------------------------------------------------
+
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING
         "Build not specified, defaulted to RelWithDebInfo" FORCE)
@@ -123,7 +124,7 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 # <-- Define warnings to show -->
 target_link_libraries(${PROJECT_NAME} PRIVATE project_options project_warnings)
 
-# <----------------------->
+# <----------------------------->
 
 # <-- Comment out if you don't need CPack -->
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
