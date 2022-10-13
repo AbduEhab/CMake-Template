@@ -13,14 +13,43 @@ add_executable(${PROJECT_NAME}
     ${INC_C_FILES}
 )
 
-# Copy Binary to DEV specified location
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    ${CMAKE_SOURCE_DIR}/bin/${CMAKE_GENERATOR_PLATFORM} # Change this to your Prefered location (I prefer ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>/ or ${CMAKE_SOURCE_DIR}/bin/$<CMAKE_GENERATOR_PLATFORM>/)
-)
+if(UNIX AND NOT APPLE)
+    # Copy Binary to DEV specified location
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        ${CMAKE_SOURCE_DIR}/bin/linux
+    )
 
+    # Delete Cmake files
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E remove_directory
+        ${CMAKE_SOURCE_DIR}/bin/linux/CMakeFiles
+    )
+
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E remove
+        ${CMAKE_SOURCE_DIR}/bin/linux/Makefile
+    )
+
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E remove
+        ${CMAKE_SOURCE_DIR}/bin/linux/cmake_install.cmake
+    )
+
+else()
+    # Copy Binary to DEV specified location
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        ${CMAKE_SOURCE_DIR}/bin/${CMAKE_GENERATOR_PLATFORM} # Change this to your Prefered location (I prefer ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>/ or ${CMAKE_SOURCE_DIR}/bin/$<CMAKE_GENERATOR_PLATFORM>/)
+    )
+endif()
 
 # Link assets needed for the binary to run
 
