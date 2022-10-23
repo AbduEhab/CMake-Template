@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.0.0)
 
-file(GLOB SRC_CXX_FILES CONFIGURE_DEPENDS *.cpp)
-file(GLOB SRC_C_FILES CONFIGURE_DEPENDS *.c)
-file(GLOB INC_CXX_FILES CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include*.cpp)
-file(GLOB INC_C_FILES CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include*.c)
+file(GLOB_RECURSE SRC_CXX_FILES CONFIGURE_DEPENDS *.cpp)
+file(GLOB_RECURSE SRC_C_FILES CONFIGURE_DEPENDS *.c)
+file(GLOB_RECURSE INC_CXX_FILES CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include*.cpp)
+file(GLOB_RECURSE INC_C_FILES CONFIGURE_DEPENDS ${PROJECT_SOURCE_DIR}/include*.c)
 
 # Add source files to be compiled here (should be done automatically but im making it clear if you want to add more files)
 add_executable(${PROJECT_NAME}
