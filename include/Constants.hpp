@@ -75,9 +75,9 @@ inline const std::string BINARY_DIRECTORY = std::filesystem::current_path().stri
 template <typename T>
 inline T random(T min = 0.0, T max = 1.0)
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dis(min, max);
+    thread_local std::random_device rd;
+    thread_local std::mt19937 gen(rd());
+    thread_local std::uniform_real_distribution<> dis(min, max);
     return (T)dis(gen);
 }
 
