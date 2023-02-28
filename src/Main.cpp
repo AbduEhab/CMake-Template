@@ -1,6 +1,6 @@
 #include <Constants.hpp>
 
-int main([[maybe_unused]] int, [[maybe_unused]] char **)
+int main([[maybe_unused]] int argc, [[maybe_unused]] char *arg[])
 {
     Instrumentor::Get().beginSession("Main func");
 
