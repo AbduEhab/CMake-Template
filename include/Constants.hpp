@@ -113,7 +113,9 @@ void print_by_force(First arg, [[maybe_unused]] const Strings &...rest)
     if constexpr (sizeof...(rest) > 0) [[likely]]
     {
         print_by_force(rest...);
+        return;
     }
+    std::cout << std::endl;
 }
 
 /**
