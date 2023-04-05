@@ -78,7 +78,7 @@ inline T random(T min = 0.0, T max = 1.0)
     thread_local std::random_device rd;
     thread_local std::mt19937 gen(rd());
     thread_local std::uniform_real_distribution<> dis(min, max);
-    return (T)dis(gen);
+    return static_cast<T>(dis(gen));
 }
 
 /**
@@ -95,7 +95,7 @@ inline T random(T min = 0.0, T max = 1.0)
 template <typename T>
 inline constexpr T map_to_range(T value, T min, T max, T new_min, T new_max)
 {
-    return (T)(((value - min) / (max - min)) * (new_max - new_min) + new_min);
+    return static_cast<T>(((value - min) / (max - min)) * (new_max - new_min) + new_min);
 }
 
 /**
@@ -135,13 +135,11 @@ void async_print_by_force(const First arg, const Strings &...rest)
 
 #ifdef DEBUG
 
-#define debug_print(x) print_by_force(x, "");
 #define debug_print(x, y) \
     print_by_force(x, y); \
     std::cout << std::endl;
 #define debug_async_print(x, y) async_print_by_force(x, y);
 #else
-#define debug_print(x)
 #define debug_print(x, y)
 #define debug_async_print(x, y)
 

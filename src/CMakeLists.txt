@@ -13,15 +13,36 @@ add_executable(${PROJECT_NAME}
     ${INC_C_FILES}
 )
 
-# Copy Binary to DEV specified location
-add_custom_command(
-    TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    ${CMAKE_SOURCE_DIR}/bin/${CMAKE_GENERATOR_PLATFORM} # Change this to your Prefered location (I prefer ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>/ or ${CMAKE_SOURCE_DIR}/bin/$<CMAKE_GENERATOR_PLATFORM>/)
-)
+if(NOT CMAKE_GENERATOR_PLATFORM)
+    set(MANUAL_MOVE TRUE)
+    message(STATUS "Assuming platform on build")
+endif(NOT CMAKE_GENERATOR_PLATFORM)
+
+if(NOT MANUAL_MOVE)
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        ${CMAKE_SOURCE_DIR}/bin/${CMAKE_GENERATOR_PLATFORM} # Change this to your Prefered location (I prefer ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>/ or ${CMAKE_SOURCE_DIR}/bin/$<CMAKE_GENERATOR_PLATFORM>/)
+    )
+endif(NOT MANUAL_MOVE)
 
 if(UNIX AND NOT APPLE)
+    if(MANUAL_MOVE)
+        add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E remove_directory
+            ${CMAKE_SOURCE_DIR}/bin/linux
+        )
+
+        add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            ${CMAKE_SOURCE_DIR}/bin/linux # Change this to your Prefered location (I prefer ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>/ or ${CMAKE_SOURCE_DIR}/bin/$<CMAKE_GENERATOR_PLATFORM>/)
+        )
+    endif(MANUAL_MOVE)
+
     # Delete Cmake files
     add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
@@ -40,14 +61,56 @@ if(UNIX AND NOT APPLE)
         COMMAND ${CMAKE_COMMAND} -E remove
         ${CMAKE_SOURCE_DIR}/bin/linux/cmake_install.cmake
     )
+
+elseif(APPLE)
+    if(MANUAL_MOVE)
+        add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E remove_directory
+            ${CMAKE_SOURCE_DIR}/bin/mac
+        )
+
+        add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            ${CMAKE_SOURCE_DIR}/bin/mac # Change this to your Prefered location (I prefer ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>/ or ${CMAKE_SOURCE_DIR}/bin/$<CMAKE_GENERATOR_PLATFORM>/)
+        )
+    endif(MANUAL_MOVE)
+
+    # Delete Cmake files
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E remove_directory
+        ${CMAKE_SOURCE_DIR}/bin/mac/CMakeFiles
+    )
+
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E remove
+        ${CMAKE_SOURCE_DIR}/bin/mac/Makefile
+    )
+
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E remove
+        ${CMAKE_SOURCE_DIR}/bin/mac/cmake_install.cmake
+    )
+
+elseif(WIN32)
+    if(MANUAL_MOVE)
+        add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E remove_directory
+            ${CMAKE_SOURCE_DIR}/bin/win32
+        )
+        add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            ${CMAKE_SOURCE_DIR}/bin/win32 # Change this to your Prefered location (I prefer ${CMAKE_SOURCE_DIR}/bin/$<CONFIG>/ or ${CMAKE_SOURCE_DIR}/bin/$<CMAKE_GENERATOR_PLATFORM>/)
+        )
+    endif(MANUAL_MOVE)
 endif()
 
-# Link assets needed for the binary to run
-
-# add_custom_command(
-# TARGET ${PROJECT_NAME} POST_BUILD
-# COMMAND ${CMAKE_COMMAND} -E create_symlink ${link_src} ${link_dst}
-# DEPENDS ${link_dst}
-# COMMENT "symbolic link ${link_src} => ${link_dst}"
-# )
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
