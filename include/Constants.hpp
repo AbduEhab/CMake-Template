@@ -68,7 +68,7 @@ inline const std::string BINARY_DIRECTORY = std::filesystem::current_path().stri
  * @param max The maximum value of the random number
  */
 template <typename T>
-inline T random(T min = 0.0, T max = 1.0)
+[[nodiscard]] inline auto random(T min = 0.0, T max = 1.0) -> T
 {
     thread_local std::random_device rd;
     thread_local std::mt19937 gen(rd());
@@ -88,7 +88,7 @@ inline T random(T min = 0.0, T max = 1.0)
  * @return constexpr T
  */
 template <typename T>
-inline constexpr T map_to_range(T value, T min, T max, T new_min, T new_max)
+[[nodiscard]] inline auto constexpr map_to_range(T value, T min, T max, T new_min, T new_max) -> T
 {
     return static_cast<T>(((value - min) / (max - min)) * (new_max - new_min) + new_min);
 }
@@ -102,7 +102,7 @@ inline constexpr T map_to_range(T value, T min, T max, T new_min, T new_max)
  * @param rest
  */
 template <typename First, typename... Strings>
-void print_by_force(First arg, [[maybe_unused]] const Strings &...rest_of_args)
+inline auto print_by_force(First arg, [[maybe_unused]] const Strings &...rest_of_args) -> void
 {
 
     std::ostringstream os;
@@ -121,7 +121,7 @@ void print_by_force(First arg, [[maybe_unused]] const Strings &...rest_of_args)
  * @param rest
  */
 template <typename First, typename... Strings>
-void async_print_by_force(const First arg, const Strings &...rest)
+inline auto async_print_by_force(const First arg, const Strings &...rest) -> void
 {
     std::thread t([&]()
                   { print_by_force(arg, rest...); std::cout << std::endl; });
@@ -148,7 +148,7 @@ void async_print_by_force(const First arg, const Strings &...rest)
  * @param T
  */
 template <typename Base, typename T>
-inline constexpr int instanceof (const T *)
+inline auto constexpr instanceof (const T *) -> int
 {
     return std::is_base_of<Base, T>::value;
 }

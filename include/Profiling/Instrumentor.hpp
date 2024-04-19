@@ -59,7 +59,7 @@ public:
      *
      * @return Instrumentor&
      */
-    static Instrumentor &Get()
+    static auto Get() -> Instrumentor &
     {
         static Instrumentor instance;
         return instance;

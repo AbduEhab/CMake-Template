@@ -29,7 +29,7 @@ struct Timer
      *
      * @return float
      */
-    float elapsed() const
+    [[nodiscard]] auto elapsed() const -> float
     {
         return static_cast<float>(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - m_Start).count()) * 0.001f * 0.001f * 0.001f;
     }
@@ -39,13 +39,13 @@ struct Timer
      *
      * @return float
      */
-    float elapsed_millis() const
+    [[nodiscard]] auto elapsed_millis() const -> float
     {
         return elapsed() * 1000.0f;
     }
 
     // << operator
-    friend std::ostream &operator<<(std::ostream &os, const Timer &timer)
+    friend auto operator<<(std::ostream &os, const Timer &timer) -> std::ostream &
     {
         os << timer.elapsed();
         return os;
