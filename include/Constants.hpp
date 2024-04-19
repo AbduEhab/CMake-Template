@@ -4,6 +4,7 @@
 #include <array>
 #include <assert.h>
 #include <chrono>
+#include <cstdio>
 #include <deque>
 #include <filesystem>
 #include <fstream>
@@ -27,12 +28,6 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
-
-// Set value to 1 to use the Profiling system
-#define PROFILING 1
-
-#include "Profiling/Instrumentor.hpp"
-#include "Profiling/Timer.hpp"
 
 // define DEBUG macros here
 #ifdef DEBUG
@@ -107,14 +102,14 @@ inline constexpr T map_to_range(T value, T min, T max, T new_min, T new_max)
  * @param rest
  */
 template <typename First, typename... Strings>
-void print_by_force(First arg, [[maybe_unused]] const Strings &...rest)
+void print_by_force(First arg, [[maybe_unused]] const Strings &...rest_of_args)
 {
-    std::cout << arg;
-    if constexpr (sizeof...(rest) > 0) [[likely]]
-    {
-        print_by_force(rest...);
-        return;
-    }
+
+    std::ostringstream os;
+    os << arg;
+    ((os << rest_of_args), ...);
+
+    std::puts(os.str().c_str());
 }
 
 /**
@@ -135,13 +130,13 @@ void async_print_by_force(const First arg, const Strings &...rest)
 
 #ifdef DEBUG
 
-#define debug_print(x, y) \
-    print_by_force(x, y); \
-    std::cout << std::endl;
-#define debug_async_print(x, y) async_print_by_force(x, y);
+#define debug_print(x, ...) print_by_force(x, __VA_ARGS__);
+#define debug_async_print(x, ...) async_print_by_force(x, __VA_ARGS__);
+
 #else
-#define debug_print(x, y)
-#define debug_async_print(x, y)
+
+#define debug_print(x, ...) ;
+#define debug_async_print(x, ...) ;
 
 #endif
 
@@ -157,3 +152,9 @@ inline constexpr int instanceof (const T *)
 {
     return std::is_base_of<Base, T>::value;
 }
+
+// Set value to 1 to use the Profiling system
+#define PROFILING 1
+
+#include "Profiling/Instrumentor.hpp"
+#include "Profiling/Timer.hpp"

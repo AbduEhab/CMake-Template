@@ -1,4 +1,5 @@
 #pragma once
+#include <Constants.hpp>
 
 /**
  * @brief A simple timer class that can be used to measure the time it takes to execute a function or a block of code.
@@ -65,11 +66,12 @@ struct TimedBlock
         : m_Name(name)
     {
         m_Timer.reset();
+        debug_print("Starting block: ", name);
     }
 
     ~TimedBlock()
     {
-        std::cout << m_Name << ": " << m_Timer << std::endl;
+        debug_print("Block '", m_Name, "' took: ", m_Timer.elapsed(), " seconds");
     }
 
     Timer m_Timer;
